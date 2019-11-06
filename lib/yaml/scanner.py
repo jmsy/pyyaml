@@ -28,6 +28,7 @@ __all__ = ['Scanner', 'ScannerError']
 
 from error import MarkedYAMLError
 from tokens import *
+import math
 
 class ScannerError(MarkedYAMLError):
     pass
@@ -1220,7 +1221,13 @@ class Scanner(object):
                                     "expected escape sequence of %d hexdecimal numbers, but found %r" %
                                         (length, self.peek(k).encode('utf-8')), self.get_mark())
                     code = int(self.prefix(length), 16)
-                    chunks.append(unichr(code))
+                    if code >= 0x10000 and code <= 0x10FFFF:
+                        hi = math.floor((code - 0x10000) / 0x400) + 0xD800
+                        lo = ((code - 0x10000) % 0x400) + 0xDC00
+                        chunks.append(unichr(hi))
+                        chunks.append(unichr(lo))
+                    else:
+                        chunks.append(unichr(code))
                     self.forward(length)
                 elif ch in u'\r\n\x85\u2028\u2029':
                     self.scan_line_break()

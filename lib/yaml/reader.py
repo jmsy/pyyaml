@@ -137,9 +137,9 @@ class Reader(object):
         self.update(1)
 
     if has_ucs4:
-        NON_PRINTABLE = re.compile(u'[^\x09\x0A\x0D\x20-\x7E\x85\xA0-\uD7FF\uE000-\uFFFD\U00010000-\U0010ffff]')
+        NON_PRINTABLE = re.compile(u'[^\x09\x0A\x0D\x20-\x7E\x85\xA0-\uD7FF\uE000-\uFFFD\U00010000-\U0010ffff\ud83d[\ude00-\ude4f]\ud83c[\udf00-\uffff]\ud83d[\u0000-\uddff]\u263a\ufe0f\ud83e[\udd29-\udd2f]\ud83d[\ude80-\udeff]\ud83c[\udde0-\uddff]\u2728]')
     else:
-        NON_PRINTABLE = re.compile(u'[^\x09\x0A\x0D\x20-\x7E\x85\xA0-\uD7FF\uE000-\uFFFD]')
+        NON_PRINTABLE = re.compile(u'[^\x09\x0A\x0D\x20-\x7E\x85\xA0-\uD7FF\uE000-\uFFFD\ud83d[\ude00-\ude4f]\ud83c[\udf00-\uffff]\ud83d[\u0000-\uddff]\u263a\ufe0f\ud83e[\udd29-\udd2f]\ud83d[\ude80-\udeff]\ud83c[\udde0-\uddff]\u2728]')
     def check_printable(self, data):
         match = self.NON_PRINTABLE.search(data)
         if match:
